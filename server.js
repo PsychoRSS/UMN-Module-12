@@ -21,9 +21,9 @@ function allQuestions () {
           "View all departments",
           "View all roles",
           "View employees",
-          "New employee",
+          "Add a new employee",
           "Add a new apartment",
-          "Delete role"
+          "Update employee role"
 
         ]
     })
@@ -32,25 +32,35 @@ function allQuestions () {
         
        
         if(answers['start_questions'] === 'View all departments') {
-            // console.log("good");
+         
             viewAllDep()
-           
+          
         }else if(answers['start_questions'] ===  'View all roles') {
-            console.log('employees')
+
           viewAllRol()
+
         }else if(answers['start_questions'] ===  'View employees') {
-          console.log("VIEWING ALL EMPLOYEES")
+        
           viewAllEmp()
-        }else if(answers['start_questions'] ===  'New employee') {
+
+        }else if(answers['start_questions'] ===  'Add a new employee') {
+
+          addEmp()
 
         }else if(answers['start_questions'] ===  'Add a new apartment') {
 
-        }else if(answers['start_questions'] ===  'Delete role') {
+          addDep()
+
+        }else if(answers['start_questions'] ===  'Update employee role') {
+
+          updateEmp()
 
         }
         
         else {console.log("mess up")}
-    })
+    }).catch ((err)=> {
+      console.log(err);
+    }) 
 }
 
 allQuestions()
@@ -61,8 +71,8 @@ function viewAllRol () {
         console.log(err)
       }
 
-        // JSON.stringify(results)
-        console.log(results);
+        JSON.stringify(console.log(results))
+        // console.log(results);
       });
 };
 
@@ -87,17 +97,146 @@ function viewAllEmp () {
 };
 
 function addDep (rawr) {
+  inquirer.prompt(
+  {
+    type: 'input',
+    name: 'addDep',
+    message: 'What is the name of the new department?'
+  }
+  )
 
+  db.query(``, 3, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+
+    console.log(result);
+  });
 };
 
 function addRol (rawr) {
+  inquirer.prompt([
+    {
+      type: 'input',
+      name: 'name',
+      message: 'What is the name of the new role?'
+    },
+    {
+      type: 'input',
+      name: 'salary',
+      message: 'What is the pay for this new role?'
+    },
+    {
+      type: 'input',
+      name: 'whatDep',
+      message: 'What department is this role for?'
+    }
+  ]).then ((answer) => {
+    console.log(answer.name)
+    console.log(answer.salart)
+    console.log(answer.salart)
+  }).catch ((err) => {
+    cconsole.log(err)
+  })
 
+  db.query(``, 3, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+
+    console.log(result);
+  });
 };
 
-function addEmp (rawr) {
 
+function addEmp (rawr) {
+  const departments = db.query(`SELECT * FROM department`, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+
+    console.log(result);
+    for (let i = 0; i < result.id.length; i++) {
+      const element = array[i];
+      
+    }
+    const depId = result[0].id
+    const depTitle = result
+    console.log(depId)
+    console.log(depTitle)
+    // const allDeps = dep
+    return 
+  });
+  departments
+  inquirer.prompt([
+    {
+      type: 'input',
+      name: 'name',
+      message: 'What is the name of the new employee?'
+    },
+    {
+      type: 'input',
+      name: 'last_name',
+      message: 'What is the new employees last name?'
+    },
+    {
+      type: 'input',
+      name: 'newRole',
+      message: 'What role will they be working?'
+    },  
+    {
+      type: 'list',
+      name: 'whatManager',
+      message: 'Who will be the new employees manager?',
+      choices: [
+
+      ]
+    },
+  ]).then ((answer) => {
+    console.log(answer.name)
+    console.log(answer.salart)
+    console.log(answer.salart)
+  }).catch ((err) => {
+    cconsole.log(err)
+  })
+  // db.query(``, 3, (err, result) => {
+  //   if (err) {
+  //     console.log(err);
+  //   }
+
+  //   console.log(result);
+  // });
 };
 
 function updateEmp(rawr) {
+  inquirer.prompt([
+    {
+      type: 'input',
+      name: 'name',
+      message: 'What is the name of the new role?'
+    },
+    {
+      type: 'input',
+      name: 'salary',
+      message: 'What is the pay for this new role?'
+    },
+    {
+      type: 'input',
+      name: 'whatDep',
+      message: 'What department is this role for?'
+    }
+  ]).then ((answer) => {
+    console.log(answer.name)
+    console.log(answer.salart)
+    console.log(answer.salart)
+  }).catch ((err) => {
+    cconsole.log(err)
+  })
+  db.query(``, 3, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
 
+    console.log(result);
+  });
 };
