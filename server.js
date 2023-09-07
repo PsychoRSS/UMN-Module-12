@@ -13,6 +13,9 @@ const db = mysql.createConnection(
     console.log(`Connected to the courses_db database.`)
   );
 
+
+  
+
 function allQuestions () {
     inquirer.prompt ({
         type: 'list',
@@ -96,25 +99,29 @@ function viewAllEmp () {
   });
 };
 
-function addDep (rawr) {
+function addDep () {
   inquirer.prompt(
   {
     type: 'input',
     name: 'addDep',
     message: 'What is the name of the new department?'
   }
-  )
+  ).then ((answers) => {
+    db.query(`INSERT INTO department (dep_name VALUES (${answers})) `,  (err, result) => {
+      if (err) {
+        console.log(err);
+      }
+  
+      console.log(result);
+    });
+  }).catch((err) => {
+    console.log(err)
+  })
 
-  db.query(``, 3, (err, result) => {
-    if (err) {
-      console.log(err);
-    }
-
-    console.log(result);
-  });
+ 
 };
 
-function addRol (rawr) {
+function addRol () {
   inquirer.prompt([
     {
       type: 'input',
@@ -149,66 +156,93 @@ function addRol (rawr) {
 };
 
 
-function addEmp (rawr) {
-  const departments = db.query(`SELECT * FROM department`, (err, result) => {
+function addEmp() {
+  db.query('SELECT * FROM department', 'ORDER BY id ASC', (err, result) => {
     if (err) {
       console.log(err);
+      return;
     }
 
-    console.log(result);
-    for (let i = 0; i < result.id.length; i++) {
-      const element = array[i];
-      
-    }
-    const depId = result[0].id
-    const depTitle = result
-    console.log(depId)
-    console.log(depTitle)
-    // const allDeps = dep
-    return 
+    const depId = result.map(obj => obj.dep_name);
+
+    inquirer
+      .prompt([
+        {
+          type: 'input',
+          name: 'name',
+          message: 'What is the name of the new employee?',
+        },
+        {
+          type: 'input',
+          name: 'last_name',
+          message: 'What is the new employee\'s last name?',
+        },
+        {
+          type: 'list',
+          name: 'newRole',
+          message: 'What role will they be working?',
+          choices: ["bath_worker", "cleaning expert"],
+        },
+        {
+          type: 'list',
+          name: 'whatManager',
+          message: 'Who will be the new employee\'s manager?',
+          choices: depId,
+        },
+      ])
+      .then(answer => {
+        console.log(answer);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   });
-  departments
-  inquirer.prompt([
-    {
-      type: 'input',
-      name: 'name',
-      message: 'What is the name of the new employee?'
-    },
-    {
-      type: 'input',
-      name: 'last_name',
-      message: 'What is the new employees last name?'
-    },
-    {
-      type: 'input',
-      name: 'newRole',
-      message: 'What role will they be working?'
-    },  
-    {
-      type: 'list',
-      name: 'whatManager',
-      message: 'Who will be the new employees manager?',
-      choices: [
-
-      ]
-    },
-  ]).then ((answer) => {
-    console.log(answer.name)
-    console.log(answer.salart)
-    console.log(answer.salart)
-  }).catch ((err) => {
-    cconsole.log(err)
-  })
-  // db.query(``, 3, (err, result) => {
-  //   if (err) {
-  //     console.log(err);
-  //   }
-
-  //   console.log(result);
-  // });
 };
 
-function updateEmp(rawr) {
+function addEmp() {
+  db.query('SELECT * FROM roles', 'ORDER BY id ASC', (err, result) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+
+    const depId = result.map(obj => obj.dep_name);
+
+    inquirer
+      .prompt([
+        {
+          type: 'input',
+          name: 'name',
+          message: 'What is the name of the new employee?',
+        },
+        {
+          type: 'input',
+          name: 'last_name',
+          message: 'What is the new employee\'s last name?',
+        },
+        {
+          type: 'list',
+          name: 'newRole',
+          message: 'What role will they be working?',
+          choices: depId
+        },
+        {
+          type: 'list',
+          name: 'whatManager',
+          message: 'Who will be the new employee\'s manager?',
+          choices: depId,
+        },
+      ])
+      .then(answer => {
+        console.log(answer);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  });
+}
+
+function updateEmp() {
   inquirer.prompt([
     {
       type: 'input',
@@ -229,6 +263,8 @@ function updateEmp(rawr) {
     console.log(answer.name)
     console.log(answer.salart)
     console.log(answer.salart)
+
+
   }).catch ((err) => {
     cconsole.log(err)
   })
