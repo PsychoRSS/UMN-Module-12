@@ -18,7 +18,10 @@
   },
   "homepage": "https://github.com/PsychoRSS/UMN-Module-12#readme",
   "dependencies": {
+    "console.table": "^0.10.0",
+    "dotenv": "^16.3.1",
     "inquirer": "^8.2.4",
-    "mysql2": "^3.6.0"
+    "mysql2": "^3.6.0",
+    "sequelize": "^6.33.0"
   }
 }
